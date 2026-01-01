@@ -1,0 +1,53 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ site_title }}InovaTech Systems</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js"></script>
+</head>
+<body class="bg-slate-900 text-slate-300 selection:bg-blue-600 selection:text-white flex flex-col min-h-screen">
+    <header class="fixed w-full z-50 top-0 border-b border-white/10 bg-slate-900/80">
+        <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <a href="#" class="flex items-center gap-2 group">
+                    <div class="relative w-16 h-16 transition-transform group-hover:scale-110 duration-300">
+                        <img src="{% static 'images/logo.svg' %}" alt="Logo InovaTech" class="w-full h-full drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]">
+                    </div>
+                    <span class="text-xl font-bold text-white tracking-tight">
+                        InovaTech<span class="text-blue-500">.</span>
+                    </span>
+                </a>
+
+                <div class="flex items-center gap-6 sm:gap-8">
+                    <a href="#sobre"
+                        class="text-sm font-medium hover:text-white hover:underline
+                            decoration-blue-500 decoration-2 underline-offset-4 transition-colors">
+                        Sobre
+                    </a>
+
+                    <a href="#contato"
+                        class="text-sm font-medium px-4 py-2 rounded-full bg-white/5 border border-white/10
+                            hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors duration-300">
+                        Contato
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    {% block content %}{% endblock content %}
+
+    <footer class="border-t border-white/10 py-8 bg-slate-900 text-center text-sm text-slate-500 mt-auto">
+        <p>&copy; 2026 InovaTech Systems. Todos os direitos reservados.</p>
+            <p class="mt-2 text-xs">
+                <a href="#" class="hover:text-slate-400 transition-colors">
+                    Área Administrativa
+                </a>
+            </p>
+    </footer>
+</body>
+</html>
