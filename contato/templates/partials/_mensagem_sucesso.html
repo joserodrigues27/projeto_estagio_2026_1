@@ -1,0 +1,21 @@
+<div id="container-form-contato" class="flex h-full flex-col items-center justify-center py-10 text-center">
+    <div class="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-green-500/10 ring-1 ring-green-500/30">
+        <svg class="h-10 w-10 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+    </div>
+
+    <h3 class="mb-3 text-2xl font-bold text-white">Mensagem enviada com sucesso! 🚀</h3>
+    
+    <p class="mx-auto mb-8 max-w-xs text-slate-400">
+        Obrigado pelo contato. Nossa equipe responderá em até 24 horas.
+    </p>
+
+    <a href="{% url 'landpage' %}" 
+       hx-get="{% url 'landpage' %}" 
+       hx-target="#container-form-contato" 
+       hx-swap="outerHTML"
+       class="text-sm font-medium text-blue-400 transition-colors hover:text-blue-300 hover:underline">
+        Enviar outra mensagem
+    </a>
+</div>

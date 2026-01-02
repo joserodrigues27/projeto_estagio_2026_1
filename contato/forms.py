@@ -5,8 +5,8 @@ from . import models
 
 class MensagemForm(forms.ModelForm):
     css_input = (
-        'w-full bg-slate-600/50 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-slate-300 '
-        'focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors'
+        'w-full rounded-lg border border-white/10 bg-slate-600/50 px-4 py-3 text-white placeholder-slate-300 '
+        'transition-colors focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none'
     ) 
     
     OPCOES = [('', 'Selecione o tipo de projeto')] + list(models.Mensagem.ASSUNTOS.items())

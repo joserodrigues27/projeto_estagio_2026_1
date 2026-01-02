@@ -4,6 +4,9 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Mensagem(models.Model):
+    class Meta:
+        verbose_name_plural = 'Mensagens'
+
     ASSUNTOS = {
         'desenvolvimento': 'Desenvolvimento Web/App',
         'consultoria': 'Consultoria Técnica',
@@ -17,7 +20,7 @@ class Mensagem(models.Model):
     assunto = models.CharField(max_length=50, choices=ASSUNTOS)
     mensagem = models.TextField()
     data_envio = models.DateTimeField(default=timezone.now)
-    lido = models.BooleanField(default=False)
+    lida = models.BooleanField(default=False)
 
     def __str__(self):
         return self.nome
