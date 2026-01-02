@@ -1,0 +1,70 @@
+<div class="animate-fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm" id="modal-backdrop">
+    <div class="relative flex max-h-[90vh] w-full max-w-2xl scale-100 transform flex-col overflow-hidden rounded-2xl border border-white/10 bg-slate-900 shadow-2xl transition-all">
+        <div class="flex shrink-0 items-center justify-between border-b border-white/10 bg-slate-800/50 p-4 sm:p-6">
+            <h3 class="text-lg font-bold text-white sm:text-xl">Detalhes da Mensagem</h3>
+            
+            <button onclick="document.getElementById('janela-msg').innerHTML = ''" 
+                    hx-get="{% url 'painel_pesquisa' %}"
+                    hx-target="#tabela-container"
+                    hx-swap="outerHTML"
+                    class="text-slate-400 transition-colors hover:text-white">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" 
+                    stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+
+        <div class="custom-scrollbar space-y-4 overflow-y-auto p-4 sm:space-y-6 sm:p-6"> 
+            <div class="flex items-center gap-4">
+                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue-600 text-lg font-bold text-white sm:h-14 sm:w-14 sm:text-xl">
+                    {{ msg.nome|slice:":2"|upper }}
+                </div>
+
+                <div class="min-w-0"> <p class="truncate text-base font-medium text-white sm:text-lg">{{ msg.nome }}</p>
+                    <p class="truncate text-sm text-slate-400">{{ msg.email }}</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-4 rounded-lg border border-white/5 bg-slate-800/50 p-4 sm:grid-cols-2 sm:gap-6 sm:p-6">
+                <div>
+                    <span class="text-xs font-semibold text-slate-500 uppercase">Assunto</span>
+                    <p class="truncate font-medium text-blue-300" title="{{ msg.assunto }}">{{ msg.assunto }}</p>
+                </div>
+
+                <div class="text-left sm:text-right">
+                    <span class="text-xs font-semibold text-slate-500 uppercase">Recebido em</span>
+                    <p class="text-slate-300">{{ msg.data_envio|date:"d/m/Y H:i" }}</p>
+                </div>
+                
+                <div class="col-span-1 mt-2 border-t border-white/5 pt-4 sm:col-span-2">
+                    <span class="text-xs font-semibold text-slate-500 uppercase">Telefone</span>
+                    <p class="font-mono text-base text-slate-300 sm:text-lg">
+                        {{ msg.telefone }}
+                    </p>
+                </div>
+            </div>
+
+            <div>
+                <span class="mb-2 block text-xs font-semibold text-slate-500 uppercase">Mensagem</span>
+                <div class="scrollbar-thin scrollbar-thumb-slate-700 max-h-64 overflow-y-auto rounded-lg border border-white/5 bg-slate-800/30 p-4 text-sm leading-relaxed text-slate-300 sm:p-6 sm:text-base">
+                    {{ msg.mensagem|linebreaks }}
+                </div>
+            </div>
+        </div>
+
+        <div class="flex shrink-0 items-center justify-between gap-4 border-t border-white/10 bg-slate-800/50 p-4">
+            <button 
+                hx-get="{% url 'confirmar_exclusao' msg.pk %}"
+                hx-target="#janela-msg"
+                class="flex items-center gap-2 rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-2 text-sm font-medium text-red-400 transition-colors hover:bg-red-600 hover:text-white">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" 
+                    stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                Apagar
+            </button>
+
+            <span class="flex items-center gap-1 text-xs font-medium text-green-400 select-none">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                Marcada como lida
+            </span> 
+        </div>
+    </div>
+</div>

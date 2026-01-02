@@ -1,0 +1,98 @@
+<div id="tabela-container" class="fade-in">
+    {% if mensagens %}
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse text-left">
+                <thead>
+                    <tr class="border-b border-white/5 bg-slate-800/50 text-sm tracking-wider text-slate-300 uppercase">
+                        <th class="p-6 font-semibold">Status</th> <th class="p-6 font-semibold">Nome / Email</th>
+                        <th class="p-6 font-semibold">Assunto</th>
+                        <th class="hidden p-6 font-semibold md:table-cell">Mensagem</th> 
+                        <th class="p-6 text-right font-semibold">Recebido em</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-white/5">
+                    {% for msg in mensagens %}
+                    <tr 
+                        hx-get="{% url 'detalhe_mensagem' msg.pk %}"
+                        hx-target="#janela-msg" 
+                        hx-swap="innerHTML"
+                        class="hover:bg-white/5 transition-colors group cursor-pointer {% if not msg.lida %}bg-blue-500/5{% endif %}"
+                    >
+                        <td class="w-4 p-6">
+                            {% if not msg.lida %}
+                                <div class="h-3 w-3 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]" title="Não lida"></div>
+                            {% else %}
+                                <div class="h-3 w-3 rounded-full bg-slate-700" title="Lido"></div>
+                            {% endif %}
+                        </td>
+                        
+                        <td class="p-6">
+                            <div class="flex items-center gap-3">
+                                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 text-sm font-bold text-white">
+                                    {{ msg.nome|slice:":2"|upper }}
+                                </div>
+                                
+                                <div>
+                                    <p class="font-medium {% if not msg.lida %}text-white{% else %}text-slate-300{% endif %}">
+                                        {{ msg.nome }}
+                                    </p>
+                                    <p class="text-xs text-slate-500">{{ msg.email }}</p>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td class="p-6">
+                            <span class="inline-block rounded border border-blue-500/20 bg-blue-500/10 px-2 py-1 text-xs font-medium text-blue-300">
+                                {{ msg.assunto }}
+                            </span>
+                        </td>
+
+                        <td class="hidden max-w-xs p-6 md:table-cell">
+                            <p class="truncate text-sm text-slate-400" title="{{ msg.texto }}">
+                                {{ msg.mensagem }}
+                            </p>
+                        </td>
+
+                        <td class="p-6 text-right text-sm whitespace-nowrap text-slate-500">
+                            {{ msg.data_envio|date:"d/m/Y H:i" }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="flex items-center justify-between border-t border-white/5 bg-slate-800/30 px-6 py-4">
+            <span class="text-sm text-slate-400">
+                Página {{ mensagens.number }} de {{ mensagens.paginator.num_pages }}
+            </span>
+
+            <div class="flex gap-2">
+                {% if mensagens.has_previous %}
+                    <button
+                        hx-get="{% url 'painel_pesquisa' %}?page={{ mensagens.previous_page_number }}&q={{ q }}&status={{ status }}"
+                        hx-target="#tabela-container"
+                        hx-swap="outerHTML"
+                        class="rounded bg-slate-700 px-3 py-1 text-sm text-white transition-colors hover:bg-slate-600">
+                        Anterior
+                    </button>
+                {% endif %}
+
+                {% if mensagens.has_next %}
+                    <button
+                        hx-get="{% url 'painel_pesquisa' %}?page={{ mensagens.next_page_number }}&q={{ q }}&status={{ status }}"
+                        hx-target="#tabela-container"
+                        hx-swap="outerHTML"
+                        class="rounded bg-slate-700 px-3 py-1 text-sm text-white transition-colors hover:bg-slate-600">
+                        Próxima
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+
+    {% else %}
+        <div class="p-12 text-center">
+            <p class="text-lg text-slate-400">Nenhuma mensagem encontrada.</p>
+        </div>
+    {% endif %}
+</div>
