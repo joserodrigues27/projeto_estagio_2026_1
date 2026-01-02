@@ -1,6 +1,7 @@
 from django import forms
 from phonenumber_field.formfields import PhoneNumberField
-from . import models
+
+from .models import Mensagem
 
 
 class MensagemForm(forms.ModelForm):
@@ -9,7 +10,7 @@ class MensagemForm(forms.ModelForm):
         'transition-colors focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none'
     ) 
     
-    OPCOES = [('', 'Selecione o tipo de projeto')] + list(models.Mensagem.ASSUNTOS.items())
+    OPCOES = [('', 'Selecione o tipo de projeto')] + list(Mensagem.ASSUNTOS.items())
 
     nome = forms.CharField(
         widget=forms.TextInput(
@@ -52,5 +53,5 @@ class MensagemForm(forms.ModelForm):
     )
 
     class Meta:
-        model = models.Mensagem
+        model = Mensagem
         fields = ('nome', 'telefone', 'email', 'assunto', 'mensagem')

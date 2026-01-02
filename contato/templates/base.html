@@ -9,31 +9,66 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js"></script>
 </head>
-<body class="bg-slate-900 text-slate-300 selection:bg-blue-600 selection:text-white flex flex-col min-h-screen">
-    <header class="fixed w-full z-50 top-0 border-b border-white/10 bg-slate-900/80">
-        <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <a href="#" class="flex items-center gap-2 group">
-                    <div class="relative w-16 h-16 transition-transform group-hover:scale-110 duration-300">
-                        <img src="{% static 'images/logo.svg' %}" alt="Logo InovaTech" class="w-full h-full drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]">
+<body class="flex min-h-screen flex-col bg-slate-900 text-slate-300 selection:bg-blue-600 selection:text-white">
+    <header class="fixed top-0 z-50 w-full border-b border-white/10 bg-slate-900/80 backdrop-blur-md">
+        <nav class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+            <div class="flex h-20 items-center justify-between">
+                <a href="{% url 'landpage' %}" class="group flex shrink-0 items-center gap-2">
+                    <div class="relative h-12 w-12 transition-transform duration-300 group-hover:scale-110 sm:h-16 sm:w-16">
+                        <img src="{% static 'images/logo.svg' %}" alt="Logo InovaTech" class="h-full w-full drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]">
                     </div>
-                    <span class="text-xl font-bold text-white tracking-tight">
+                    
+                    <span class="text-lg font-bold tracking-tight text-white sm:text-xl">
                         InovaTech<span class="text-blue-500">.</span>
                     </span>
                 </a>
 
-                <div class="flex items-center gap-6 sm:gap-8">
-                    <a href="#sobre"
-                        class="text-sm font-medium hover:text-white hover:underline
-                            decoration-blue-500 decoration-2 underline-offset-4 transition-colors">
-                        Sobre
-                    </a>
+                <div class="flex items-center gap-3 sm:gap-4">
+                    {% with route_name=request.resolver_match.url_name %}
+                        {% if route_name == 'login' %}
 
-                    <a href="#contato"
-                        class="text-sm font-medium px-4 py-2 rounded-full bg-white/5 border border-white/10
-                            hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-colors duration-300">
-                        Contato
-                    </a>
+                        {% elif user.is_authenticated %}
+                            
+                            <div class="{% if route_name == 'painel' %}flex{% else %}hidden sm:flex{% endif %} mr-1 flex-col items-end text-right">
+                                <span class="text-[10px] font-bold tracking-wider text-slate-500 uppercase">
+                                    Logado como
+                                </span>
+                                <span class="max-w-[150px] truncate text-sm font-bold text-white">
+                                    {{ user.username }}
+                                </span>
+                            </div>
+
+                            {% if route_name == 'landpage' %}
+                                <a href="{% url 'painel' %}" 
+                                   class="rounded-full border border-blue-500/20 bg-blue-500/10 px-4 py-2 text-xs font-medium text-blue-400 
+                                        transition-colors duration-300 hover:border-blue-600 hover:bg-blue-600 hover:text-white sm:text-sm">
+                                    Painel
+                                </a>
+                            {% endif %}
+
+                            <form action="{% url 'logout' %}" method="post" class="inline">
+                                {% csrf_token %}
+
+                                <button type="submit"
+                                    class="text-xs sm:text-sm font-medium px-4 py-2 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 
+                                        hover:bg-red-600 hover:border-red-600 hover:text-white transition-colors duration-300">
+                                    Sair
+                                </button>
+                            </form>
+                        {% else %}
+                            <a href="#sobre"
+                                class="hidden text-sm font-medium decoration-blue-500 decoration-2 underline-offset-4 
+                                    transition-colors hover:text-white hover:underline sm:block">
+                                Sobre
+                            </a>
+
+                            <a href="#contato"
+                                class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium
+                                    transition-colors duration-300 hover:border-blue-600 hover:bg-blue-600 hover:text-white">
+                                Contato
+                            </a>
+                        {% endif %}
+                    {% endwith %}
                 </div>
             </div>
         </nav>
@@ -41,13 +76,24 @@
 
     {% block content %}{% endblock content %}
 
-    <footer class="border-t border-white/10 py-8 bg-slate-900 text-center text-sm text-slate-500 mt-auto">
-        <p>&copy; 2026 InovaTech Systems. Todos os direitos reservados.</p>
-            <p class="mt-2 text-xs">
-                <a href="#" class="hover:text-slate-400 transition-colors">
-                    Área Administrativa
-                </a>
-            </p>
+    <footer class="mt-auto border-t border-white/10 bg-slate-900 py-8 text-center text-sm text-slate-500">
+        <p>&copy; {% now "Y" %} InovaTech Systems. Todos os direitos reservados.</p>
+        {% with route_name=request.resolver_match.url_name %}
+            {% if route_name != 'login' and route_name != 'painel' %}
+                <p class="mt-2 text-xs">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'painel' %}" class="font-medium text-blue-500 transition-colors hover:text-blue-400">
+                            Acessar Painel
+                        </a>
+
+                    {% else %}
+                        <a href="{% url 'login' %}" class="transition-colors hover:text-slate-400">
+                            Área Administrativa
+                        </a>
+                    {% endif %}
+                </p>
+            {% endif %}
+        {% endwith %}
     </footer>
 </body>
 </html>

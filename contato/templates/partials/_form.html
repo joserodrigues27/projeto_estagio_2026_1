@@ -2,8 +2,8 @@
       hx-target="#form-container" 
       hx-swap="innerHTML" 
       hx-indicator="#loading"
-      class="space-y-6" 
-      enctype="multipart/form-data">
+      method="post" enctype="multipart/form-data"
+      class="space-y-6">
                         
     {% csrf_token %}
     
@@ -22,7 +22,7 @@
     </div>
 
     <button type="submit"
-        class="w-full transform rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 font-bold text-white shadow-lg shadow-blue-500/25
+        class="w-full transform rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 font-bold text-white shadow-lg shadow-blue-500/25 
             transition-all hover:-translate-y-1 hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50">
         Enviar Mensagem
     </button>

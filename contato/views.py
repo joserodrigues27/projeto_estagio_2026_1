@@ -9,17 +9,27 @@ def landpage(request):
     if request.method == 'POST':
         form = MensagemForm(request.POST)
 
-        contexto = {'form': form, 'form_action': form_action,}
-
         if form.is_valid():
             form.save()
             return render(request, 'partials/_mensagem_sucesso.html')
+        
+        context = {
+            'form': form,
+            'form_action': form_action
+        }
 
-        return render(request, 'partials/_form.html', contexto)
+        return render(request, 'partials/_form.html', context)
 
-    contexto = {'form': MensagemForm(), 'form_action': form_action,}
+    context = {
+        'form': MensagemForm(),
+        'form_action': form_action
+    }
 
     if request.headers.get('HX-Request'):
-        return render(request, 'partials/_form.html', contexto)
+        return render(request, 'partials/_form.html', context)
 
-    return render(request, 'landpage.html', contexto)
+    return render(request, 'landpage.html', context)
+
+
+def painel_mensagens(request):
+    return render(request, 'painel.html')
